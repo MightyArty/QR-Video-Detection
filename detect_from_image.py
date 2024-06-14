@@ -1,7 +1,6 @@
-'''
-Sample Command:-
-python detect_aruco_images.py --image Images/frame_1.png --type DICT_4X4_100
-'''
+"""
+Detect ArUCo tags from an image and display the detected tags along with the tag ID and corner points.
+"""
 
 import csv
 import os

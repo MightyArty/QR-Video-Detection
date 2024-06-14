@@ -1,7 +1,6 @@
-'''
-Sample Command:-
-python detect_aruco_video.py --type DICT_4X4_100 --video Videos/challengeB.mp4
-'''
+"""
+Detect ArUCo tags from a video file and save the output in a CSV file, in addition to displaying the detected tags along with the tag ID and corner points.
+"""
 
 import csv
 import os
