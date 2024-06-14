@@ -1,18 +1,17 @@
 '''
 Sample Command:-
-python detect_aruco_video.py --type DICT_5X5_100 --video Videos/challengeB.mp4
+python detect_aruco_video.py --type DICT_4X4_100 --video Videos/challengeB.mp4
 '''
 
 import numpy as np
 from utils import ARUCO_DICT, aruco_display
 import argparse
-import time
 import cv2
 import sys
 
 ap = argparse.ArgumentParser()
 ap.add_argument("-v", "--video", help="Path to the video file")
-ap.add_argument("-t", "--type", type=str, default="DICT_ARUCO_ORIGINAL", help="Type of ArUCo tag to detect")
+ap.add_argument("-t", "--type", type=str, default="DICT_4X4_100", help="Type of ArUCo tag to detect")
 args = vars(ap.parse_args())
 
 if args["video"] is None:
