@@ -3,6 +3,8 @@ Sample Command:-
 python detect_aruco_video.py --type DICT_4X4_100 --video Videos/challengeB.mp4
 '''
 
+import csv
+import os
 import numpy as np
 from utils import ARUCO_DICT, aruco_display
 import argparse
@@ -27,16 +29,32 @@ if ARUCO_DICT.get(args["type"], None) is None:
 arucoDict = cv2.aruco.Dictionary_get(ARUCO_DICT[args["type"]])
 arucoParams = cv2.aruco.DetectorParameters_create()
 
+output_folder = 'Out'
+if not os.path.exists(output_folder):
+	os.makedirs(output_folder)
+csv_file = open('Out/video_output.csv', 'w', newline='')
+csv_writer = csv.writer(csv_file)
+csv_writer.writerow(['Frame ID', 'Marker ID', 'Top Left', 'Top Right', 'Bottom Right', 'Bottom Left'])
+
+frame_id = 0
+
 while True:
 	ret, frame = video.read()
 	if ret is False:
 		break
+	frame_id += 1
 	h, w, _ = frame.shape
 
 	width=1000
 	height = int(width*(h/w))
 	frame = cv2.resize(frame, (width, height), interpolation=cv2.INTER_CUBIC)
 	corners, ids, rejected = cv2.aruco.detectMarkers(frame, arucoDict, parameters=arucoParams)
+
+	if ids is not None:
+		for i in range(len(ids)):
+			marker_conrenrs = corners[i].reshape((4, 2))
+			topLeft, topRight, bottomRight, bottomLeft = marker_conrenrs
+			csv_writer.writerow([frame_id, ids[i][0], tuple(topLeft), tuple(topRight), tuple(bottomRight), tuple(bottomLeft)])
 
 	detected_markers = aruco_display(corners, ids, rejected, frame)
 
@@ -46,5 +64,6 @@ while True:
 	if key == ord("q"):
 	    break
 
+csv_file.close()
 cv2.destroyAllWindows()
 video.release()

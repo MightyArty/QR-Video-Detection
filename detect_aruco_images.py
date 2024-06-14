@@ -2,6 +2,9 @@
 Sample Command:-
 python detect_aruco_images.py --image Images/frame_1.png --type DICT_4X4_100
 '''
+
+import csv
+import os
 import numpy as np
 from utils import ARUCO_DICT, aruco_display
 import argparse
@@ -12,6 +15,10 @@ ap = argparse.ArgumentParser()
 ap.add_argument("-i", "--image", required=True, help="path to input image containing ArUCo tag")
 ap.add_argument("-t", "--type", type=str, default="DICT_ARUCO_ORIGINAL", help="type of ArUCo tag to detect")
 args = vars(ap.parse_args())
+
+if args["image"] is None:
+	print ("[Error] Image file location is not provided")
+	sys.exit(1)
 
 image = cv2.imread(args["image"])
 h,w,_ = image.shape
@@ -31,6 +38,21 @@ print("Detecting '{}' tags....".format(args["type"]))
 arucoDict = cv2.aruco.Dictionary_get(ARUCO_DICT[args["type"]])
 arucoParams = cv2.aruco.DetectorParameters_create()
 corners, ids, rejected = cv2.aruco.detectMarkers(image, arucoDict, parameters=arucoParams)
+
+output_folder = 'Out'
+if not os.path.exists(output_folder):
+	os.makedirs(output_folder)
+frame_name = os.path.splitext(os.path.basename(args["image"]))[0]
+csv_file_name = f'{frame_name}_image_output.csv'
+csv_file = open(f'Out/{csv_file_name}', 'w', newline='')
+csv_writer = csv.writer(csv_file)
+csv_writer.writerow(['Marker ID', 'Top Left', 'Top Right', 'Bottom Right', 'Bottom Left'])
+
+if ids is not None:
+	for i in range(len(ids)):
+		marker_corners = corners[i].reshape((4, 2))
+		topLeft, topRight, bottomRight, bottomLeft = marker_corners
+		csv_writer.writerow([ids[i][0], tuple(topLeft), tuple(topRight), tuple(bottomRight), tuple(bottomLeft)])
 
 detected_markers = aruco_display(corners, ids, rejected, image)
 cv2.imshow("Image", detected_markers)
