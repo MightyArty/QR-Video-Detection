@@ -1,3 +1,4 @@
 opencv-contrib-python==4.6.0.66
 numpy
-cv2
+opencv-python-headless
+
