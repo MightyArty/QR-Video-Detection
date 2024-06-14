@@ -14,9 +14,11 @@ $ cd QR-Video-Detection
 # Install the libraries
 $ pip install -r requirements.txt
 # To run the QR-Image detection run the following
-$ python detect_from_image.py --image Images/frame_1.png --type DICT_4X4_100
+$ python detect_from_image.py --image Images/frame_1.jpg --type DICT_4X4_100
 # Where "framge_1.png" can be changed to any other image containing a QR code.
 # To run the QR-Video detection run the following
 $ python detect_from_video.py --type DICT_4X4_100 --video Videos/challengeB.mp4
 # After the run, you will see the output.csv file under the "Out" folder.
+# To close the video/image window
+$ Press "Q"
 ```

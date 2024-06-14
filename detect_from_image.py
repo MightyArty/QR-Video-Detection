@@ -4,7 +4,6 @@ Detect ArUCo tags from an image and display the detected tags along with the tag
 
 import csv
 import os
-import numpy as np
 from utils import ARUCO_DICT, aruco_display
 import argparse
 import cv2
@@ -16,31 +15,29 @@ ap.add_argument("-t", "--type", type=str, default="DICT_ARUCO_ORIGINAL", help="t
 args = vars(ap.parse_args())
 
 if args["image"] is None:
-	print ("[Error] Image file location is not provided")
-	sys.exit(1)
+    print("[Error] Image file location is not provided")
+    sys.exit(1)
 
 image = cv2.imread(args["image"])
-h,w,_ = image.shape
-width=600
-height = int(width*(h/w))
+h, w, _ = image.shape
+width = 600
+height = int(width * (h / w))
 image = cv2.resize(image, (width, height), interpolation=cv2.INTER_CUBIC)
 
-
-# verify that the supplied ArUCo tag exists and is supported by OpenCV
 if ARUCO_DICT.get(args["type"], None) is None:
-	print(f"ArUCo tag type '{args['type']}' is not supported")
-	sys.exit(0)
+    print(f"ArUCo tag type '{args['type']}' is not supported")
+    sys.exit(0)
 
-# load the ArUCo dictionary, grab the ArUCo parameters, and detect
-# the markers
 print("Detecting '{}' tags....".format(args["type"]))
-arucoDict = cv2.aruco.Dictionary_get(ARUCO_DICT[args["type"]])
-arucoParams = cv2.aruco.DetectorParameters_create()
-corners, ids, rejected = cv2.aruco.detectMarkers(image, arucoDict, parameters=arucoParams)
+arucoDict = cv2.aruco.getPredefinedDictionary(ARUCO_DICT[args["type"]])
+arucoParams = cv2.aruco.DetectorParameters()
+
+detector = cv2.aruco.ArucoDetector(dictionary=arucoDict, detectorParams=arucoParams)
+corners, ids, rejected = detector.detectMarkers(image)
 
 output_folder = 'Out'
 if not os.path.exists(output_folder):
-	os.makedirs(output_folder)
+    os.makedirs(output_folder)
 frame_name = os.path.splitext(os.path.basename(args["image"]))[0]
 csv_file_name = f'{frame_name}_image_output.csv'
 csv_file = open(f'Out/{csv_file_name}', 'w', newline='')
@@ -48,15 +45,11 @@ csv_writer = csv.writer(csv_file)
 csv_writer.writerow(['Marker ID', 'Top Left', 'Top Right', 'Bottom Right', 'Bottom Left'])
 
 if ids is not None:
-	for i in range(len(ids)):
-		marker_corners = corners[i].reshape((4, 2))
-		topLeft, topRight, bottomRight, bottomLeft = marker_corners
-		csv_writer.writerow([ids[i][0], tuple(topLeft), tuple(topRight), tuple(bottomRight), tuple(bottomLeft)])
+    for i in range(len(ids)):
+        marker_corners = corners[i].reshape((4, 2))
+        topLeft, topRight, bottomRight, bottomLeft = marker_corners
+        csv_writer.writerow([ids[i][0], tuple(topLeft), tuple(topRight), tuple(bottomRight), tuple(bottomLeft)])
 
 detected_markers = aruco_display(corners, ids, rejected, image)
 cv2.imshow("Image", detected_markers)
-
-# # Uncomment to save
-# cv2.imwrite("output_sample.png",detected_markers)
-
 cv2.waitKey(0)
