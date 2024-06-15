@@ -24,6 +24,11 @@ ARUCO_DICT = {
 	"DICT_APRILTAG_36h11": cv2.aruco.DICT_APRILTAG_36h11
 }
 
+CAMERA_PARAMS = {
+	"resolution": (1280, 720),  # 720p
+	"fov": 82.6  # degrees
+}
+
 def aruco_display(corners, ids, rejected, image):
 	if len(corners) > 0:
 		# flatten the ArUco IDs list
