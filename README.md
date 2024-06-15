@@ -1,9 +1,29 @@
 # QR Code Detection Assignment in Autonomous Robotics Course
 
 ## Description
-The provided code is a Aruco code detection algorithm, which for a given video/image file, detects the aruco codes that is located within the video/image, marks the aruco code with a green rectangle with the aruco ID and writes down the 2D information of each given [Frame, Aruco ID] to a csv file located under `Out` folder.
+The provided code is a Aruco code detection algorithm, which for a given video/image file, detects the aruco codes that is located within the video/image, marks the aruco code with a green rectangle with the aruco ID and writes down the 2D and 3D information for each given frame in the following format: `[Frame ID, Marker ID, Top Left, Top Right, Bottom Right, Bottom Left, Distance, Yaw, Pitch, Roll]` to a csv file located under `Out` folder.
+
+### Explanation
+- **Marker ID**: The ID of the detected ArUco marker.
+- **Top Left**: Coordinates of the top left corner of the marker.
+- **Top Right**: Coordinates of the top right corner of the marker.
+- **Bottom Right**: Coordinates of the bottom right corner of the marker.
+- **Bottom Left**: Coordinates of the bottom left corner of the marker.
+- **Distance**: The distance from the camera to the marker.
+- **Yaw**: The yaw angle of the marker.
+- **Pitch**: The pitch angle of the marker.
+- **Roll**: The roll angle of the marker.
 
 In addition, it prints to the terminal each Aruco code that it detects with it's ID.
+
+## Examples:
+1. Running the detection on `Images/frame_1.jpg`
+
+![](./Examples/Example1.png)
+
+2. Running the detection on `Videos/challengeB.mp4`
+
+[![Watch the video](https://img.youtube.com/vi/sTVfOo0h26k/0.jpg)](https://youtu.be/sTVfOo0h26k)
 
 ## How to run
 ```bash
