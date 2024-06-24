@@ -39,6 +39,9 @@ $ python detect_from_image.py --image Images/frame_1.jpg --type DICT_4X4_100
 # To run the QR-Video detection run the following
 $ python detect_from_video.py --type DICT_4X4_100 --video Videos/challengeB.mp4
 # After the run, you will see the output.csv file under the "Out" folder.
+# To run the QR-Camera detection run the following
+python detect_from_camera.py --type DICT_4X4_100
+# After the run, you will see the camera_detect.csv file under the "Out" folder.
 # To close the video/image window
 $ Press "Q"
 ```
