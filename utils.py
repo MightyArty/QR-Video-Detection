@@ -57,31 +57,5 @@ def aruco_display(corners, ids, rejected, image):
 			# draw the ArUco marker ID on the image
 			cv2.putText(image, str(markerID),(topLeft[0], topLeft[1] - 10), cv2.FONT_HERSHEY_SIMPLEX,
 				0.5, (0, 255, 0), 2)
-			print("[Inference] ArUco marker ID: {}".format(markerID))
-			result = ""
-			if markerID == 1:
-				result = "forward"
-			elif markerID == 2:
-				result = "forward"
-			elif markerID == 3:
-				result = "turn-left,turn-left"
-			elif markerID == 4:
-				result = "turn-right"
-			elif markerID == 5:
-				result = "forward"
-			elif markerID == 6:
-				result = "turn-left,turn-left"
-			elif markerID == 7:
-				result = "forward"
-			elif markerID == 8:
-				result = "forward"
-			elif markerID == 9:
-				result = "turn-right,turn-right"
-			elif markerID == 10:
-				result = "turn-right,down"
-			elif markerID == 11:
-				result = "forward"
-			elif markerID == 0:
-				result = "turn-right"
-			print(f"the direction is:{result}")
+			# print("[Inference] ArUco marker ID: {}".format(markerID))
 	return image
